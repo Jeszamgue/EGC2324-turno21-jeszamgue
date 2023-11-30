@@ -9,12 +9,15 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        postgreversion: ['14.9','15']
 
     runs-on: ubuntu-latest
 
     services:
       postgres:
-        image: postgres:14.9
+        image: postgres:${{matrix.postgreversion}}
         env:
           POSTGRES_USER: decide
           POSTGRES_PASSWORD: decide
@@ -45,4 +48,4 @@ jobs:
     - name: Run tests
       run: |
         cd decide
-        run --branch --source=. ./manage.py test  --keepdb 
+        ./manage.py test  --keepdb 
